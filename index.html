@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>jsBean</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/style.css" />
+	<meta charset="utf-8" />
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+
+<body>
+	<div id="wrapper">
+
+		<div id="berriesPic"><img src="images/berries.png"/></div>
+
+		<div id="menuBar">
+
+			<div id="logoPic"><img src="images/berries.png"/></div>
+
+			<div id="logo">jBerries</div>
+
+			<button id="runButton">Run</button>
+
+			<ul id="toggles">
+
+				<li class="toggle selected">HTML</li>
+				<li class="toggle">CSS</li>
+				<li class="toggle">JS</li>
+				<li class="toggle selected" style="border: none;">Result</li>
+
+			</ul>
+
+		</div>
+
+		<div class="clear"></div>
+
+		<div class="codeContainer" id="HTMLContainer">
+
+			<div class="codeLabel">HTML</div>
+
+			<textarea id="htmlCode"></textarea>
+
+		</div>
+
+		<div class="codeContainer" id="CSSContainer">
+
+			<div class="codeLabel">CSS</div>
+
+			<textarea id="cssCode"></textarea>
+
+		</div>
+
+		<div class="codeContainer" id="JSContainer">
+
+			<div class="codeLabel">JS</div>
+
+			<textarea id="jsCode"></textarea>
+
+		</div>
+
+		<div class="codeContainer" id="ResultContainer">
+
+			<div class="codeLabel">Result</div>
+
+			<iframe></iframe>
+
+		</div>
+
+	</div>
+
+<script>
+
+window.onload = function(){
+
+	var windowHeight = $(window).height();
+	var menuBarHeight = $('#menuBar').height();
+	var codeContainerHeight = windowHeight-menuBarHeight;
+
+	$('.codeContainer').height(codeContainerHeight);
+
+	$('.toggle').click(function(){
+
+		$(this).toggleClass('selected');
+
+		var activeDiv = $(this).html();
+
+		$('#' + activeDiv + 'Container').toggle();
+
+		var showingDivs = $('.codeContainer').filter(function(){
+			return($(this).css('display') != 'none');
+		}).length;
+
+
+		var width = 100/showingDivs;
+
+		$('.codeContainer').css('width', width + '%');
+
+	});
+
+	$('#runButton').click(function(){
+		
+		$('iframe').contents().find('html').html('<style>' + $("#cssCode").val() + '</style>' + $('#htmlCode').val());
+
+		var jsCode = $('#jsCode').val();
+		var s = document.createElement("script");
+    	s.type = "text/javascript";
+    	var code = $(s).append(jsCode);
+
+   		$('iframe').html(code);
+	});
+
+}
+
+</script>
+
+</body>
+</html>
+
